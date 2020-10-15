@@ -18,7 +18,7 @@ export const userAddWaiting = async (user) => {
         newWaiting.banUsers = []
 
         // 避免連續遇到同一人
-        const historyRooms = await Room.find({users: user}).sort({'createdAt': -1}).limit(2).populate('users')
+        const historyRooms = await Room.find({users: user}).sort({'createdAt': -1}).limit(3).populate('users')
         for (const room of historyRooms) {
             for (const one of room.users) {
                 if (user._id.toString() !== one._id.toString()) {

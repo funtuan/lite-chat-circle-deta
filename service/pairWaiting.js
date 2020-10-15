@@ -16,6 +16,8 @@ cron.schedule('*/3 * * * * *', async () => {
                 waitings[index].remove()
                 waitings[k].remove()
                 waitings.splice(k, 1)
+
+                k = waitings.length
             }
         }
         index++
