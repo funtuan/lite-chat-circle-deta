@@ -16,7 +16,9 @@ export const createRoom = async (users) => {
         user.onlineRoom = room._id
         user.status = 'room'
         await user.save()
-        sendMenu('startRoom', user)
+        setTimeout(()=> {
+            sendMenu('startRoom', user)
+        }, 1000)
     }
     return;
 }
