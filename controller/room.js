@@ -27,7 +27,12 @@ export const userLeaveRoom = async (user) => {
     const room = await Room.findById(user.onlineRoom)
 
     if (!room) {
-        throw new Error('userLeaveRoom: 找不到 room')
+        await sendText({
+            bid: user.bid,
+            text: '現在沒有加入任何聊天',
+        })
+        sendMenu('home', user)
+        return;
     }
 
     user.onlineRoom = null
@@ -35,7 +40,7 @@ export const userLeaveRoom = async (user) => {
     await user.save()
     await sendText({
         bid: user.bid,
-        text: '已離開聊天',
+        text: '已成功離開聊天',
     })
     sendMenu('home', user)
 
