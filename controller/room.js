@@ -74,7 +74,7 @@ export const addChat = async (data) => {
     await room.save()
 
     for (const user of room.users) {
-        if (user._id.toString() != data.user._id.toString()) {
+        if (user._id.toString() != data.user._id.toString() && user.onlineRoom && user.onlineRoom === data.user.onlineRoom) {
             switch (data.type) {
                 case 'text':
                     await sendText({

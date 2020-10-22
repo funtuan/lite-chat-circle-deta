@@ -1,11 +1,25 @@
+import moment from 'moment';
 import Waiting from '../mongoose/model/Waiting'
 import Room from '../mongoose/model/Room'
 import { sendText, sendMenu } from '../service/messenger'
+import { rules } from '../config';
 
 export const userAddWaiting = async (user) => {
     const exist = await Waiting.findOne({
         user: user._id,
     })
+    const historyRooms = await Room.find({
+        users: user,
+        createdAt: {"$gt":new Date(moment().format('MM/DD/YYYY'))},
+    }).sort({'createdAt': -1}).limit(rules.dailyPairLimit).populate('users')
+
+    if (historyRooms.length === rules.dailyPairLimit) {
+        await sendText({
+            bid: user.bid,
+            text: `今日配對次數已用盡，請明日再試，珍惜每天能配對的 ${rules.dailyPairLimit} 位同學！`,
+        })
+        return
+    }
 
     if (exist) {
         // 正在等待
@@ -18,8 +32,7 @@ export const userAddWaiting = async (user) => {
         newWaiting.banUsers = []
 
         // 避免連續遇到同一人
-        const historyRooms = await Room.find({users: user}).sort({'createdAt': -1}).limit(3).populate('users')
-        for (const room of historyRooms) {
+        for (const room of historyRooms.slice(0, rules.repeatLimit)) {
             for (const one of room.users) {
                 if (user._id.toString() !== one._id.toString()) {
                     newWaiting.banUsers.push(one)
@@ -32,6 +45,10 @@ export const userAddWaiting = async (user) => {
         await user.save()
         // 加入等待完成
         sendMenu('waiting', user)
+        await sendText({
+            bid: user.bid,
+            text: `今日剩餘配對 ${rules.dailyPairLimit - historyRooms.length} 次，請珍惜每天能配對的 ${rules.dailyPairLimit} 位同學！`,
+        })
     }
 }
 
