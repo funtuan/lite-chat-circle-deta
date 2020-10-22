@@ -11,6 +11,7 @@
     "fb-messenger": "^2.3.1",
     "imgur": "^0.3.1",
     "messenger-node": "^0.3.2",
+    "moment": "^2.29.1",
     "mongoose": "^5.10.9",
     "node-cron": "^2.0.3"
   },
