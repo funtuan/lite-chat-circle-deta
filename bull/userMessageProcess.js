@@ -4,7 +4,7 @@ import { userAddWaiting, userLeaveWaiting } from '../controller/waiting'
 import { addChat, readChat, userLeaveRoom } from '../controller/room'
 import { sendMenu } from '../service/messenger'
 
-userMessage.process(async (job, done) => {
+userMessage.process(10, async (job, done) => {
     const { data } = job
     if (!data.user) {
         done()
