@@ -1,0 +1,9 @@
+version: '3.1'
+services:
+  lite-chat-circle:
+    restart: always
+    build: .
+    env_file:
+      .env
+    ports:
+    - "8080:80"
