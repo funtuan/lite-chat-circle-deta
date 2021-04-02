@@ -20,6 +20,6 @@ export const fbMessenger = {
 }
 
 export const rules = {
-    dailyPairLimit: process.env.DAILY_PAIR_LIMIT?process.env.DAILY_PAIR_LIMIT:7,
+    dailyPairLimit: process.env.DAILY_PAIR_LIMIT?parseInt(process.env.DAILY_PAIR_LIMIT):7,
     repeatLimit: 3,
 }
