@@ -68,28 +68,32 @@ export const addChat = async (data) => {
     const room = await Room.findById(data.user.onlineRoom).populate('users')
     if (data.type === 'image') {
         const json = await imgur.uploadUrl(data.payload.url)
-        data.text = json.data.link
+        if (json.data && json.data.link) {
+            data.text = json.data.link
+        }
     }
-    room.chats.push(data)
-    await room.save()
-
-    for (const user of room.users) {
-        if (user._id.toString() != data.user._id.toString() && user.onlineRoom && user.onlineRoom.toString() === data.user.onlineRoom.toString()) {
-            switch (data.type) {
-                case 'text':
-                    await sendText({
-                        bid: user.bid,
-                        text: data.text,
-                    })
-                    break;
-                case 'image':
-                    await sendText({
-                        bid: user.bid,
-                        text: data.text,
-                    })
-                    break;
-                default:
-                    break;
+    if (data.text) {
+        room.chats.push(data)
+        await room.save()
+    
+        for (const user of room.users) {
+            if (user._id.toString() != data.user._id.toString() && user.onlineRoom && user.onlineRoom.toString() === data.user.onlineRoom.toString()) {
+                switch (data.type) {
+                    case 'text':
+                        await sendText({
+                            bid: user.bid,
+                            text: data.text,
+                        })
+                        break;
+                    case 'image':
+                        await sendText({
+                            bid: user.bid,
+                            text: data.text,
+                        })
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
