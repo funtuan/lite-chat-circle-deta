@@ -22,7 +22,7 @@ db.on('reconnected', function () {
 });
 db.on('disconnected', function() {
   console.log('MongoDB disconnected!');
-  mongoose.connect(mongo.url, {server:{auto_reconnect:true}});
+  mongoose.connect(mongo.url);
 });
 
-mongoose.connect(mongo.url, {server:{auto_reconnect:true}});
+mongoose.connect(mongo.url);
