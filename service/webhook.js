@@ -1,4 +1,4 @@
-import message from '../controller/message'
+import { userMessage } from '../bull/queue'
 import { webhook } from '../config'
 const Messenger = require('messenger-node')
  
@@ -7,7 +7,7 @@ const Webhook = new Messenger.Webhook(webhook);
 
 Webhook.on('messages', (event_type, sender_info, webhook_event) => {
     if (webhook_event.message.text) {
-        message({
+        userMessage.add({
             user: {
                 type: 'fb',
                 bid: webhook_event.sender.id,
@@ -18,7 +18,7 @@ Webhook.on('messages', (event_type, sender_info, webhook_event) => {
     }
     if (webhook_event.message.attachments) {
         for (const attachment of webhook_event.message.attachments) {
-            message({
+            userMessage.add({
                 user: {
                     type: 'fb',
                     bid: webhook_event.sender.id,
@@ -32,7 +32,7 @@ Webhook.on('messages', (event_type, sender_info, webhook_event) => {
 
 Webhook.on('messaging_postbacks', (event_type, sender_info, webhook_event) => {
     if (webhook_event.postback) {
-        message({
+        userMessage.add({
             user: {
                 type: 'fb',
                 bid: webhook_event.sender.id,
@@ -44,7 +44,7 @@ Webhook.on('messaging_postbacks', (event_type, sender_info, webhook_event) => {
 });
 
 Webhook.on('message_reads', (event_type, sender_info, webhook_event) => {
-    message({
+    userMessage.add({
         user: {
             type: 'fb',
             bid: webhook_event.sender.id,
