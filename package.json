@@ -3,21 +3,25 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "scripts": {
+    "lint:rule": "eslint --print-config path::String"
+  },
   "dependencies": {
     "@babel/node": "^7.10.5",
     "@babel/polyfill": "^7.11.5",
+    "@sientech/eslint-config-backend": "^1.0.0",
     "async-lock": "^1.2.4",
     "bull": "3.22.6",
+    "dayjs": "^1.10.7",
+    "deta": "^1.0.1",
     "dotenv": "^8.2.0",
+    "eslint": "^8.6.0",
     "fb-messenger": "^2.3.1",
     "imgur": "^0.3.1",
     "messenger-node": "^0.3.2",
     "moment": "^2.29.1",
     "mongoose": "^5.10.9",
     "node-cron": "^2.0.3"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",

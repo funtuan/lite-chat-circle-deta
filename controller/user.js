@@ -1,19 +1,12 @@
-import User from '../mongoose/model/User'
+
+import * as userModel from '../model/user'
 
 export const loadUserByBid = async ({
+  type,
+  bid,
+}) => {
+  return await userModel.loginOrRegister({
     type,
     bid,
-}) => {
-    let user = await User.findOne({
-        type,
-        bid,
-    })
-    if (!user) {
-        user = new User({
-            type,
-            bid,
-        })
-        await user.save()
-    }
-    return user
+  })
 }
